@@ -1,0 +1,15 @@
+{
+  "generator-sicarator": {
+    "promptValues": {
+      "authorName": "Rayann Bentounes",
+      "authorEmail": "rayann.bentounes@sicara.com",
+      "ci": ".github",
+      "includeApi": false,
+      "includeDvc": false,
+      "includeStreamlit": true
+    },
+    "projectName": "expert_connect",
+    "projectSlug": "expertconnect",
+    "projectDescription": "Project generated with Sicarator"
+  }
+}
