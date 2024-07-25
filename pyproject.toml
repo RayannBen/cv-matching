@@ -6,6 +6,10 @@ authors = ["Rayann Bentounes <rayann.bentounes@sicara.com>"]
 
 [tool.poetry.dependencies]
 python = "3.11.6"
+qdrant-client = "^1.10.1"
+openai = "^1.37.0"
+python-dotenv = "^1.0.1"
+langchain-community = "^0.2.10"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.2"

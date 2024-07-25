@@ -17,3 +17,10 @@ __pycache__/
 
 # macOS
 .DS_Store
+
+# environment
+/.env
+
+# data and storage
+/data/
+/qdrant_storage/
