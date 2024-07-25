@@ -14,7 +14,7 @@ rag_assistant = RagAssistant(openai_client=openai_client, qdrant_client=qdrant_c
 
 
 if __name__ == "__main__":
-    query = "Who is the best candidate to analyse if a picture is a cat or a dog?"
+    query = "Who is the best candidate to analyse the safety of a plane project?"
     chunks = rag_assistant.retrieve(query)
     print("chunks: ", chunks)
-    print(rag_assistant.generate_answer(query, chunks))
+    print(""" \n\nAnswer: """, rag_assistant.generate_answer(query, chunks))
