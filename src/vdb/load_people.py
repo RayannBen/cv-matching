@@ -9,7 +9,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http import models as rest
 from qdrant_client.models import Distance, VectorParams
 
-COLLECTION_NAME = "people_collection"
+COLLECTION_NAME = "streamlit_people"
 OPEN_AI_EMBEDDINGS_SIZE = 1536
 
 
