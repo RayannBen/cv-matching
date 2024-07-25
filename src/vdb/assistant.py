@@ -3,7 +3,7 @@ from openai import OpenAI
 from qdrant_client import QdrantClient
 
 DEFAULT_COLLECTION_NAME = "people_collection"
-TOP_VECTOR_SEARCH = 1
+TOP_VECTOR_SEARCH = 5
 
 
 class RagAssistant:
@@ -20,11 +20,12 @@ class RagAssistant:
         """Initialize the assistant."""
         self.openai_client = openai_client
         self.qdrant_client = qdrant_client
-        self.collection_name = collection_name
         self.top_k_vectors = top_k_vectors
         self.model = model
 
-    def retrieve(self, query: str) -> list[str]:
+    def retrieve(
+        self, query: str, collection_name: str = DEFAULT_COLLECTION_NAME
+    ) -> list[dict[str, str]]:
         """Retrieve the top k vectors related to the given question from a Qdrant DB."""
         embedded_query = (
             self.openai_client.embeddings.create(
@@ -35,14 +36,12 @@ class RagAssistant:
             .embedding
         )
         query_results = self.qdrant_client.search(
-            collection_name=self.collection_name,
+            collection_name=collection_name,
             query_vector=embedded_query,
             limit=self.top_k_vectors,
         )
         return [
-            f"{vector.payload['content']}"
-            for vector in query_results
-            if vector.payload is not None
+            vector.payload for vector in query_results if vector.payload is not None
         ]
 
     def generate_answer(self, query: str, context_chunks: list[str]) -> str | None:
@@ -67,8 +66,12 @@ class RagAssistant:
         )
         return response.choices[0].message.content
 
-    def query(self, query: str) -> str | None:
+    def query(
+        self, query: str, collection_name: str = DEFAULT_COLLECTION_NAME
+    ) -> str | None:
         """Query the assistant."""
-        context_chunks = self.retrieve(query)
+        context_chunks = [
+            chunk["content"] for chunk in self.retrieve(query, collection_name)
+        ]
         answer = self.generate_answer(query, context_chunks)
         return answer

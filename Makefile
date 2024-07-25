@@ -33,5 +33,5 @@ type-check:
 # Streamlit
 ########################################################################################################################
 
-start-streamlit-app:
+app:
 	poetry run streamlit run "src/streamlit_app/🏠_Home_page.py"
