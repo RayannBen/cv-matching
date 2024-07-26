@@ -1,7 +1,10 @@
 """Home page of the Streamlit app."""
 
 
+import base64
+import json
 import tempfile
+from collections import OrderedDict
 from pathlib import Path
 
 import streamlit as st
@@ -13,6 +16,60 @@ from qdrant_client.models import Distance, VectorParams
 from src.streamlit_app.utils.set_page_config import set_page_config
 from src.vdb.assistant import RagAssistant
 from src.vdb.load_people import load_people
+
+PEOPLE_INFORMATIONS_PATH = Path("data/people_informations.json")
+with open(PEOPLE_INFORMATIONS_PATH) as file:
+    people_informations = json.load(file)
+
+
+def retrieve_name_from_source(source: str) -> str:
+    """Retrieve the name of a person from the source."""
+    if "/" in source:
+        return source.split("/")[-1][:-4]
+    return source[:-4]
+
+
+def display_person_information(person_information: dict[str, str]) -> None:
+    """Display the information of a person."""
+    name = person_information["name"]
+    age = person_information["age"]
+    job = person_information["job"]
+    st.markdown(f"# {name}")
+    st.markdown(f"## Age: {age} - Job: {job}")
+
+    pdf_path = Path(f"data/people/{name}.pdf")
+    if pdf_path.exists():
+        with st.expander("Preview of PDF"):
+            with open(pdf_path, "rb") as pdf_file:
+                base64_pdf = base64.b64encode(pdf_file.read()).decode("utf-8")
+            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
+            st.markdown(pdf_display, unsafe_allow_html=True)
+
+
+def select_people(best_vectors: list[dict[str, str]]) -> list[str]:
+    """Select the people from the best."""
+    return list(
+        OrderedDict.fromkeys(
+            [retrieve_name_from_source(vector["source"]) for vector in best_vectors]
+        )
+    )
+
+
+def display_people(
+    rag_assistant: RagAssistant,
+    input_text: str,
+    people_informations: dict[str, dict[str, str]] = people_informations,
+) -> None:
+    """Display the people related to the input text."""
+    best_vectors = rag_assistant.retrieve(
+        input_text, collection_name="streamlit_people"
+    )
+    ordered_people = select_people(best_vectors)
+    ordered_people_informations = [
+        people_informations[person] for person in ordered_people
+    ]
+    for person_information in ordered_people_informations:
+        display_person_information(person_information)
 
 
 def main() -> None:
@@ -63,22 +120,13 @@ def main() -> None:
             pdf_text = " ".join([doc.page_content for doc in documents])
 
             # Retrieve top k vectors related to the given question
-            best_vectors = rag_assistant.retrieve(
-                pdf_text, collection_name="streamlit_people"
-            )
-
-            st.write("Best vectors retrieved")
-            st.write([vector["source"] for vector in best_vectors])
+            display_people(rag_assistant, pdf_text)
     elif choice == "Type a Search":
         input_text = st.text_input("Enter Text")
         if st.button("Retrieve Vectors"):
+            st.write("input_text: ", input_text)
             # Retrieve top k vectors related to the given text
-            best_vectors = rag_assistant.retrieve(
-                input_text, collection_name="streamlit_people"
-            )
-
-            st.write("Best vectors retrieved")
-            st.write([vector["source"] for vector in best_vectors])
+            display_people(rag_assistant, input_text)
 
 
 if __name__ == "__main__":
