@@ -3,6 +3,8 @@
 
 import base64
 import json
+import os
+import sys
 import tempfile
 from collections import OrderedDict
 from pathlib import Path
@@ -12,6 +14,11 @@ from langchain_community.document_loaders import PyPDFLoader
 from openai import OpenAI
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+print("Current working directory: ", os.getcwd())
+os.listdir(os.getcwd())
+
 
 from src.streamlit_app.utils.set_page_config import set_page_config
 from src.vdb.assistant import RagAssistant
