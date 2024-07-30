@@ -1,4 +1,4 @@
-# expert_connect
+# cv-matching
 
 > Project generated with Sicarator
 
@@ -41,8 +41,8 @@
 
 1. Create a `pyenv` virtual environment and link it to your project folder:
     ```bash
-    pyenv virtualenv 3.11.6 expertconnect
-    pyenv local expertconnect
+    pyenv virtualenv 3.11.6 cv-matching
+    pyenv local cv-matching
     ```
     *Now, every time you are in your project directory your virtualenv will be activated!*
 

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "expertconnect"
+name = "cv-matching"
 version = "0.1.0"
 description = "Project generated with Sicarator"
 authors = ["Rayann Bentounes <rayann.bentounes@sicara.com>"]

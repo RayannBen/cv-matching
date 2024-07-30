@@ -8,8 +8,8 @@
       "includeDvc": false,
       "includeStreamlit": true
     },
-    "projectName": "expert_connect",
-    "projectSlug": "expertconnect",
+    "projectName": "cv-matching",
+    "projectSlug": "cv-matching",
     "projectDescription": "Project generated with Sicarator"
   }
 }

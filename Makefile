@@ -3,8 +3,8 @@
 ########################################################################################################################
 
 install:
-	pyenv virtualenv --force 3.11.6 expertconnect
-	pyenv local expertconnect
+	pyenv virtualenv --force 3.11.6 cv-matching
+	pyenv local cv-matching
 	VIRTUAL_ENV=$$(pyenv prefix) poetry install --no-root --sync
 
 ########################################################################################################################

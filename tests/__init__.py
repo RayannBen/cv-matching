@@ -1,1 +1,1 @@
-"""Automated tests for expert_connect."""
+"""Automated tests for cv-matching."""

@@ -3,8 +3,6 @@
 
 import base64
 import json
-import os
-import sys
 import tempfile
 from collections import OrderedDict
 from pathlib import Path
@@ -15,11 +13,9 @@ from openai import OpenAI
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
-print("Current working directory: ", os.getcwd())
-os.listdir(os.getcwd())
-
-
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+# print("Current working directory: ", os.getcwd())
+# os.listdir(os.getcwd())
 from src.streamlit_app.utils.set_page_config import set_page_config
 from src.vdb.assistant import RagAssistant
 from src.vdb.load_people import load_people
@@ -51,6 +47,11 @@ def display_person_information(person_information: dict[str, str]) -> None:
                 base64_pdf = base64.b64encode(pdf_file.read()).decode("utf-8")
             pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf"></iframe>'
             st.markdown(pdf_display, unsafe_allow_html=True)
+    else:
+        file_path = Path(f"data/people/{name}.txt")
+        if file_path.exists():
+            with st.expander("Preview of Text"), open(file_path) as file:
+                st.write(file.read())
 
 
 def select_people(best_vectors: list[dict[str, str]]) -> list[str]:
@@ -82,7 +83,7 @@ def display_people(
 def main() -> None:
     """Home page of the Streamlit app."""
     set_page_config()
-    st.title("Welcome to Expert Connect")
+    st.title("Welcome to CV Matching")
     openai_client = OpenAI()
     try:
         qdrant_client = QdrantClient(

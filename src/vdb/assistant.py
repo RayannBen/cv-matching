@@ -3,7 +3,7 @@ from openai import OpenAI
 from qdrant_client import QdrantClient
 
 DEFAULT_COLLECTION_NAME = "people_collection"
-TOP_VECTOR_SEARCH = 10
+TOP_VECTOR_SEARCH = 5
 
 
 class RagAssistant:

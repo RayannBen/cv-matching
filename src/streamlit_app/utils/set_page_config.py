@@ -1,7 +1,7 @@
 """Util to set common page config to all streamlit pages."""
 import streamlit as st
 
-STREAMLIT_TITLE = "expert_connect"
+STREAMLIT_TITLE = "cv_matching"
 
 
 def set_page_config() -> None:
