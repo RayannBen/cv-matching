@@ -1,0 +1,12 @@
+{
+    "alice": {
+        "name": "Alice",
+        "age": 30,
+        "job": "Rocket Science Engineer"
+    },
+    "bob": {
+        "name": "Bob",
+        "age": 35,
+        "job": "Software Engineer"
+    }
+}

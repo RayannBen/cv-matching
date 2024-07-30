@@ -22,5 +22,5 @@ __pycache__/
 /.env
 
 # data and storage
-/data/
+/data/package_mission
 /qdrant_storage/
